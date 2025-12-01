@@ -1,406 +1,426 @@
-/*
-We are giving you guiding comments to help you fill out this header file.
-The indentation of the comments serve as hints to how your code is structured. 
-
-These are HINTS. PLEASE READ THE README.
-Anything not specified here will be in the README.
-For example, some functions may be const versions while others may not.
-Some functions may throw exceptions while others are noexcept.
-*/
-
-/* Preprocessor directives. Guard the header file upon include */
-
-/*
-Which include directives should you put here?
-(hint: we may throw VectorExceptions. We also want to use ostream)
-*/
-
-
-/*
-Templated Vector class definition with templated Iterator class member
-The template type name can be T
-*/
-
-
-
-/* Begin by specifying private members of Vector */
-
-    /* We want to nest the Iterator class definition right here */
-
-
-    /* Write out the private members of Iterator */
-
-        /* there should be an m_container and an index */
-
-
-
-    /* Here are our your public members of Iterator*/
-
-        /* Write your constructors here */
-
-
-
-        /* Write your operator overloads here.*/
-        /* Post and pre increment and decrement operators*/
-
-
-
-
-
-
-
-
-
-        /* Overloaded += size_t operator */
-
-
-
-
-
-
-
-
-
-        /* Overloaded -= size_t operator */
-
-
-
-
-
-
-
-
-        /* Overloaded - operator. The right hand side is a const Iterator& */
-
-
-
-
-
-
-
-
-
-
-        /* Overloaded - operator.  The right hand side is a size_t */
-
-
-
-
-
-
-
-
-
-        /* Overloaded == operator. The right hand side is a const Iterator& */
-
-
-
-
-        /* Overloaded != operator. The right hand side is const Iterator& */
-
-
-        /* Overloaded star (*) operator to dereference. This returns a T& */
-
-
-        /* Overloaded -> operator. This returns a T* */
-
-
-        /*
-        It is correct to add a size_t to an Iterator.
-        What keyword should you use to specify these next two overloads? (It's in the README)
-        Remember, using + on Iterators is commutative.
-        1 + Iterator and Iterator + 1 both return an Iterator that is one forward.
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* Specify your private Vector member fields. There should be three */
-
-
-
-/* You will define your public Vector members here*/
-
-    /* Default constructor */
-
-
-    /* An overloaded constructor (see README) */
-
-
-
-    /* The begin() function */
-
-
-    /* The const version of begin(). Note: it returns a const T* type */
-
-
-    /* The empty() function */
-
-
-    /* The end() function */
-
-
-
-
-    /* The const version of end(). Note: it returns a const T* */
-
-
-
-
-
-    /* The front() function */
-
-
-
-
-    /* The const version of front(). Note it returns a const T& this is different from begin()! */
-
-
-
-
-    /* The back() function */
-
-
-
-
-    /* The const version of back(). Note: it returns a const T& */
-
-
-
-
-    /* The push_back() function */
-
-
-
-
-
-
-
-
-
-    /* The push_back function that takes an RValue reference (Type of T&&) */
-
-
-
-
-
-
-
-
-
-    /* The pop_back() function*/
-
-
-
-
-
-
-
-
-    /* The capacity() function */
-
-
-    /* The size() function */
-
-
-    /* The data() function. Returns type T* */
-
-
-    /* The const version of data(). Returns type const T* */
-
-
-    /* 
-    The erase function. It takes in a start and end Iterator
-    Hints for implementation:
-        0 1 2 3 4 5
-    We want to delete 1 2 3 4
-        0    1    2    3    4    5
-             ^start         ^end
-    Replace what is at start with what is at end and advance start and end until it reaches the vec.end()
-        0    4    2    3    4    5
-                  ^s             ^e
-        0    4    2    5    4    5
-                       ^s            e=vec.end()
-    Is anything after what s is now including s used?
-    Hint: resize the vector to include only 0 4 2. You will implement resize anyways.
-    */
-
-
-
-
-
-
-
-
-
-
-
-    /* swap_elements(). Takes two iterators. Use std::move ! */
-
-
-
-
-
-
-    /* Subscript operator[] overload */
-
-
-    /* Const version of the subscript operator[] overload */
-
-
-    /* 
-    Overloaded == operator. The right hand side is another const<T>& vector.
-    Make sure the sizes of the vectors are equal
-    Also check the elements inside are equal.
-    */
-
-
-
-
-
-
-
-
-
-
-
-    /* Overloaded != operator. */
-
-
-    /* Vector copy constructor. Does a deep copy! */
-
-
-
-
-
-
-
-    /* 
-    Vector assignment operator.
-    Make sure you don't leak memory here. 
-    */
-
-
-
-
-
-
-
-
-
-    /* at() function. */
-
-
-
-
-
-
-
-
-
-    /* const version of at() */
-
-
-
-
-
-
-
-
-
-    /* 
-    operator<< 
-    We want to write code that can write Vectors to an output stream
-    like std::cout << v << std::endl;
-    You should use the friend keyword somewhere in here. 
-    */
-
-
-
-
-
-
-    /*
-    Vector resize() function here.
-    Allocate a new buffer to move all the old elements from the old one to.
-    And then assign that new buffer to the `this`
-    Make sure to use std::move() to move data from the old buffer to the new one.
-    Make sure you don't leak memory!
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    clear() function. Make sure the destructor of each element gets called.
-    delete[] will automatically do this. 
-    But there other ways of implementing this function.
-    */
-
-
-
-
-
-
-    /* Move constructor here */
-
-
-
-
-
-
-
-    /* 
-    Move assignment here
-    Make sure there are not memory leaks!
-    */
-
-
-
-
-
-
-
-
-
-    
-    /* The Vector destructor goes here. Make sure there are no leaks */
-
-/* 
-And we are finished with this header file! 
-If you used an #ifndef #define, what should you add at the very end?
-*/
+#ifndef ICS_VECTOR_HPP
+#define ICS_VECTOR_HPP
+
+#include <iosfwd>
+#include "vector_exception.hpp"
+
+template <typename T>
+class Vector {
+private:
+    // Nested Iterator class
+    class Iterator {
+    private:
+        Vector<T>* m_container;
+        size_t index;
+        
+        friend class Vector<T>;
+
+    public:
+        // Constructor
+        Iterator(Vector<T>* container, size_t idx) 
+            : m_container(container), index(idx) {}
+
+        // Pre-increment
+        Iterator& operator++() {
+            if (index >= m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            ++index;
+            return *this;
+        }
+
+        // Post-increment
+        Iterator operator++(int) {
+            if (index >= m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = *this;
+            ++index;
+            return temp;
+        }
+
+        // Pre-decrement
+        Iterator& operator--() {
+            if (index == 0) {
+                throw VectorException("out of bounds");
+            }
+            --index;
+            return *this;
+        }
+
+        // Post-decrement
+        Iterator operator--(int) {
+            if (index == 0) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = *this;
+            --index;
+            return temp;
+        }
+
+        // Overloaded += operator
+        Iterator& operator+=(size_t offset) {
+            if (index + offset > m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            index += offset;
+            return *this;
+        }
+
+        // Overloaded -= operator
+        Iterator& operator-=(size_t offset) {
+            if (offset > index) {
+                throw VectorException("out of bounds");
+            }
+            index -= offset;
+            return *this;
+        }
+
+        // Overloaded - operator (Iterator - Iterator)
+        size_t operator-(const Iterator& other) const {
+            if (m_container != other.m_container) {
+                throw VectorException("iterators point to different containers");
+            }
+            return index - other.index;
+        }
+
+        // Overloaded - operator (Iterator - size_t)
+        Iterator operator-(size_t offset) const {
+            if (offset > index) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = *this;
+            temp.index -= offset;
+            return temp;
+        }
+
+        // Overloaded == operator
+        bool operator==(const Iterator& other) const noexcept {
+            return m_container == other.m_container && index == other.index;
+        }
+
+        // Overloaded != operator
+        bool operator!=(const Iterator& other) const noexcept {
+            return m_container != other.m_container || index != other.index;
+        }
+
+        // Dereference operator
+        T& operator*() const {
+            if (index >= m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            return m_container->m_buffer[index];
+        }
+
+        // Arrow operator
+        T* operator->() const {
+            if (index >= m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            return &(m_container->m_buffer[index]);
+        }
+
+        // Friend functions for addition
+        friend Iterator operator+(size_t offset, const Iterator& iter) {
+            if (iter.index + offset > iter.m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = iter;
+            temp.index += offset;
+            return temp;
+        }
+
+        friend Iterator operator+(const Iterator& iter, size_t offset) {
+            if (iter.index + offset > iter.m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = iter;
+            temp.index += offset;
+            return temp;
+        }
+    };
+
+    // Private member fields
+    size_t m_capacity;
+    size_t m_size;
+    T* m_buffer;
+
+public:
+    // Default constructor
+    Vector() noexcept : m_capacity(0), m_size(0), m_buffer(nullptr) {}
+
+    // Constructor with capacity
+    Vector(size_t capacity) : m_capacity(capacity), m_size(0), m_buffer(nullptr) {
+        if (capacity > 0) {
+            m_buffer = new T[capacity];
+        }
+    }
+
+    // Copy constructor
+    Vector(const Vector& other) : m_capacity(other.m_capacity), m_size(other.m_size), m_buffer(nullptr) {
+        if (m_capacity > 0) {
+            m_buffer = new T[m_capacity];
+            for (size_t i = 0; i < m_size; ++i) {
+                m_buffer[i] = other.m_buffer[i];
+            }
+        }
+    }
+
+    // Copy assignment operator
+    Vector& operator=(const Vector& other) {
+        if (this != &other) {
+            // Clean up existing buffer
+            delete[] m_buffer;
+            
+            m_capacity = other.m_capacity;
+            m_size = other.m_size;
+            
+            if (m_capacity > 0) {
+                m_buffer = new T[m_capacity];
+                for (size_t i = 0; i < m_size; ++i) {
+                    m_buffer[i] = other.m_buffer[i];
+                }
+            } else {
+                m_buffer = nullptr;
+            }
+        }
+        return *this;
+    }
+
+    // Move constructor
+    Vector(Vector&& other) noexcept 
+        : m_capacity(other.m_capacity), m_size(other.m_size), m_buffer(other.m_buffer) {
+        other.m_capacity = 0;
+        other.m_size = 0;
+        other.m_buffer = nullptr;
+    }
+
+    // Move assignment operator
+    Vector& operator=(Vector&& other) noexcept {
+        if (this != &other) {
+            // Clean up existing buffer
+            delete[] m_buffer;
+            
+            m_capacity = other.m_capacity;
+            m_size = other.m_size;
+            m_buffer = other.m_buffer;
+            
+            other.m_capacity = 0;
+            other.m_size = 0;
+            other.m_buffer = nullptr;
+        }
+        return *this;
+    }
+
+    // Destructor
+    ~Vector() noexcept {
+        delete[] m_buffer;
+    }
+
+    // begin() - returns Iterator
+    Iterator begin() noexcept {
+        return Iterator(this, 0);
+    }
+
+    // begin() const - returns const T*
+    const T* begin() const noexcept {
+        return m_size > 0 ? m_buffer : nullptr;
+    }
+
+    // end() - returns Iterator
+    Iterator end() noexcept {
+        return Iterator(this, m_size);
+    }
+
+    // end() const - returns const T*
+    const T* end() const noexcept {
+        return m_size > 0 ? m_buffer + m_size : nullptr;
+    }
+
+    // front()
+    T& front() noexcept {
+        return m_buffer[0];
+    }
+
+    // front() const
+    const T& front() const noexcept {
+        return m_buffer[0];
+    }
+
+    // back()
+    T& back() noexcept {
+        return m_buffer[m_size - 1];
+    }
+
+    // back() const
+    const T& back() const noexcept {
+        return m_buffer[m_size - 1];
+    }
+
+    // empty()
+    bool empty() const noexcept {
+        return m_size == 0;
+    }
+
+    // size()
+    size_t size() const noexcept {
+        return m_size;
+    }
+
+    // capacity()
+    size_t capacity() const noexcept {
+        return m_capacity;
+    }
+
+    // data()
+    T* data() noexcept {
+        return m_buffer;
+    }
+
+    // data() const
+    const T* data() const noexcept {
+        return m_buffer;
+    }
+
+    // push_back(const T&)
+    void push_back(const T& value) {
+        if (m_size >= m_capacity) {
+            size_t new_capacity = m_capacity == 0 ? 1 : m_capacity * 2;
+            resize(new_capacity);
+        }
+        m_buffer[m_size] = value;
+        ++m_size;
+    }
+
+    // push_back(T&&)
+    void push_back(T&& value) {
+        if (m_size >= m_capacity) {
+            size_t new_capacity = m_capacity == 0 ? 1 : m_capacity * 2;
+            resize(new_capacity);
+        }
+        m_buffer[m_size] = std::move(value);
+        ++m_size;
+    }
+
+    // pop_back()
+    void pop_back() {
+        if (m_size == 0) {
+            throw VectorException("popping from empty");
+        }
+        --m_size;
+        m_buffer[m_size].~T();
+    }
+
+    // erase(start, end)
+    void erase(Iterator start, Iterator end) {
+        if (start == end) {
+            return;
+        }
+        
+        size_t start_idx = start.index;
+        size_t end_idx = end.index;
+        size_t count = end_idx - start_idx;
+        
+        // Move elements from end to start
+        for (size_t i = end_idx; i < m_size; ++i) {
+            m_buffer[start_idx + (i - end_idx)] = std::move(m_buffer[i]);
+        }
+        
+        // Update size
+        resize(m_size - count);
+    }
+
+    // swap_elements(lhs, rhs)
+    void swap_elements(Iterator lhs, Iterator rhs) noexcept {
+        T temp = std::move(m_buffer[lhs.index]);
+        m_buffer[lhs.index] = std::move(m_buffer[rhs.index]);
+        m_buffer[rhs.index] = std::move(temp);
+    }
+
+    // operator[]
+    T& operator[](size_t index) noexcept {
+        return m_buffer[index];
+    }
+
+    // operator[] const
+    const T& operator[](size_t index) const noexcept {
+        return m_buffer[index];
+    }
+
+    // at()
+    T& at(size_t index) {
+        if (index >= m_size) {
+            throw VectorException("out of bounds");
+        }
+        return m_buffer[index];
+    }
+
+    // at() const
+    const T& at(size_t index) const {
+        if (index >= m_size) {
+            throw VectorException("out of bounds");
+        }
+        return m_buffer[index];
+    }
+
+    // operator==
+    bool operator==(const Vector& other) const noexcept {
+        if (m_size != other.m_size) {
+            return false;
+        }
+        for (size_t i = 0; i < m_size; ++i) {
+            if (!(m_buffer[i] == other.m_buffer[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // operator!=
+    bool operator!=(const Vector& other) const noexcept {
+        return !(*this == other);
+    }
+
+    // resize()
+    void resize(size_t new_capacity) {
+        if (new_capacity == m_capacity) {
+            return;
+        }
+        
+        T* new_buffer = nullptr;
+        if (new_capacity > 0) {
+            new_buffer = new T[new_capacity];
+        }
+        
+        size_t copy_size = m_size < new_capacity ? m_size : new_capacity;
+        for (size_t i = 0; i < copy_size; ++i) {
+            new_buffer[i] = std::move(m_buffer[i]);
+        }
+        
+        delete[] m_buffer;
+        m_buffer = new_buffer;
+        m_capacity = new_capacity;
+        
+        if (m_size > new_capacity) {
+            m_size = new_capacity;
+        }
+    }
+
+    // clear()
+    void clear() noexcept {
+        for (size_t i = 0; i < m_size; ++i) {
+            m_buffer[i].~T();
+        }
+        m_size = 0;
+    }
+
+    // operator<<
+    friend std::ostream& operator<<(std::ostream& os, const Vector& vec) {
+        for (size_t i = 0; i < vec.m_size; ++i) {
+            os << vec.m_buffer[i] << " ";
+        }
+        return os;
+    }
+};
+
+#endif
