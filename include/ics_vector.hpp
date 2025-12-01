@@ -120,25 +120,27 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend functions for addition
-        friend Iterator operator+(size_t offset, const Iterator& iter) {
-            if (iter.index + offset > iter.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            Iterator temp = iter;
-            temp.index += offset;
-            return temp;
-        }
-
-        friend Iterator operator+(const Iterator& iter, size_t offset) {
-            if (iter.index + offset > iter.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            Iterator temp = iter;
-            temp.index += offset;
-            return temp;
-        }
+        // Friend functions for addition - MOVED OUTSIDE Iterator class
     };
+
+    // Friend declarations for operator+ (so they can access Vector's private members)
+    friend Iterator operator+(size_t offset, const Iterator& iter) {
+        if (iter.index + offset > iter.m_container->m_size) {
+            throw VectorException("out of bounds");
+        }
+        Iterator temp = iter;
+        temp.index += offset;
+        return temp;
+    }
+
+    friend Iterator operator+(const Iterator& iter, size_t offset) {
+        if (iter.index + offset > iter.m_container->m_size) {
+            throw VectorException("out of bounds");
+        }
+        Iterator temp = iter;
+        temp.index += offset;
+        return temp;
+    }
 
     // Private member fields
     size_t m_capacity;
@@ -414,7 +416,7 @@ public:
         m_size = 0;
     }
 
-    // operator<<
+    // operator
     friend std::ostream& operator<<(std::ostream& os, const Vector& vec) {
         for (size_t i = 0; i < vec.m_size; ++i) {
             os << vec.m_buffer[i] << " ";
