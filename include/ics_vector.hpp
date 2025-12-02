@@ -7,12 +7,6 @@
 template <typename T>
 class Vector {
 private:
-    class Iterator;
-    
-    // Declare the friend functions here so they're friends of Vector
-    friend Iterator operator+(size_t offset, const Iterator& iter);
-    friend Iterator operator+(const Iterator& iter, size_t offset);
-    
     // Nested Iterator class
     class Iterator {
     private:
@@ -126,9 +120,22 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Declare as friends of Iterator too
-        friend Iterator operator+(size_t offset, const Iterator& iter);
-        friend Iterator operator+(const Iterator& iter, size_t offset);
+        // Friend functions defined inline - they have access to everything
+        friend Iterator operator+(size_t offset, const Iterator& iter) {
+            Iterator result(iter.m_container, iter.index + offset);
+            if (result.index > result.m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            return result;
+        }
+
+        friend Iterator operator+(const Iterator& iter, size_t offset) {
+            Iterator result(iter.m_container, iter.index + offset);
+            if (result.index > result.m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            return result;
+        }
     };
 
     // Private member fields
@@ -398,26 +405,5 @@ public:
         return os;
     }
 };
-
-// Define the friend functions OUTSIDE both classes
-template <typename T>
-typename Vector<T>::Iterator operator+(size_t offset, const typename Vector<T>::Iterator& iter) {
-    if (iter.index + offset > iter.m_container->m_size) {
-        throw VectorException("out of bounds");
-    }
-    typename Vector<T>::Iterator temp = iter;
-    temp.index += offset;
-    return temp;
-}
-
-template <typename T>
-typename Vector<T>::Iterator operator+(const typename Vector<T>::Iterator& iter, size_t offset) {
-    if (iter.index + offset > iter.m_container->m_size) {
-        throw VectorException("out of bounds");
-    }
-    typename Vector<T>::Iterator temp = iter;
-    temp.index += offset;
-    return temp;
-}
 
 #endif
