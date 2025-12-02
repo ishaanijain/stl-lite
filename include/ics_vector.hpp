@@ -2,6 +2,8 @@
 #define ICS_VECTOR_HPP
 
 #include <iosfwd>
+#include <cstddef>
+#include <utility>
 #include "vector_exception.hpp"
 
 template <typename T>
@@ -77,11 +79,12 @@ private:
         }
 
         // Overloaded - operator (Iterator - Iterator)
-        size_t operator-(const Iterator& other) const {
+        // Changed return type to ptrdiff_t to handle negative differences
+        std::ptrdiff_t operator-(const Iterator& other) const {
             if (m_container != other.m_container) {
                 throw VectorException("iterators point to different containers");
             }
-            return index - other.index;
+            return static_cast<std::ptrdiff_t>(index) - static_cast<std::ptrdiff_t>(other.index);
         }
 
         // Overloaded - operator (Iterator - size_t)
@@ -120,7 +123,7 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend functions defined inline - they have access to everything
+        // Friend functions defined inline
         friend Iterator operator+(size_t offset, const Iterator& iter) {
             Iterator result(iter.m_container, iter.index + offset);
             if (result.index > result.m_container->m_size) {
@@ -300,7 +303,7 @@ public:
             throw VectorException("popping from empty");
         }
         --m_size;
-        m_buffer[m_size].~T();
+        // Don't manually call destructor - it will be called when array is deleted
     }
 
     // erase(start, end)
@@ -311,10 +314,14 @@ public:
         size_t start_idx = start.index;
         size_t end_idx = end.index;
         size_t count = end_idx - start_idx;
+        
+        // Shift elements after the erased range
         for (size_t i = end_idx; i < m_size; ++i) {
             m_buffer[start_idx + (i - end_idx)] = std::move(m_buffer[i]);
         }
-        resize(m_size - count);
+        
+        // Update size (don't call resize as it changes capacity)
+        m_size -= count;
     }
 
     // swap_elements(lhs, rhs)
@@ -391,13 +398,11 @@ public:
 
     // clear()
     void clear() noexcept {
-        for (size_t i = 0; i < m_size; ++i) {
-            m_buffer[i].~T();
-        }
+        // Don't manually call destructors - just reset size
         m_size = 0;
     }
 
-    // operator
+    // operator<<
     friend std::ostream& operator<<(std::ostream& os, const Vector& vec) {
         for (size_t i = 0; i < vec.m_size; ++i) {
             os << vec.m_buffer[i] << " ";
