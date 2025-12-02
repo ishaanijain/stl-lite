@@ -7,14 +7,12 @@
 template <typename T>
 class Vector {
 private:
-    // Forward declare Iterator
     class Iterator;
-
-    // Private member fields
-    size_t m_capacity;
-    size_t m_size;
-    T* m_buffer;
-
+    
+    // Declare the friend functions here so they're friends of Vector
+    friend Iterator operator+(size_t offset, const Iterator& iter);
+    friend Iterator operator+(const Iterator& iter, size_t offset);
+    
     // Nested Iterator class
     class Iterator {
     private:
@@ -128,25 +126,15 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend functions for addition declared here
-        friend Iterator operator+(size_t offset, const Iterator& iter) {
-            if (iter.index + offset > iter.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            Iterator temp = iter;
-            temp.index += offset;
-            return temp;
-        }
-
-        friend Iterator operator+(const Iterator& iter, size_t offset) {
-            if (iter.index + offset > iter.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            Iterator temp = iter;
-            temp.index += offset;
-            return temp;
-        }
+        // Declare as friends of Iterator too
+        friend Iterator operator+(size_t offset, const Iterator& iter);
+        friend Iterator operator+(const Iterator& iter, size_t offset);
     };
+
+    // Private member fields
+    size_t m_capacity;
+    size_t m_size;
+    T* m_buffer;
 
 public:
     // Default constructor
@@ -172,12 +160,9 @@ public:
     // Copy assignment operator
     Vector& operator=(const Vector& other) {
         if (this != &other) {
-            // Clean up existing buffer
             delete[] m_buffer;
-            
             m_capacity = other.m_capacity;
             m_size = other.m_size;
-            
             if (m_capacity > 0) {
                 m_buffer = new T[m_capacity];
                 for (size_t i = 0; i < m_size; ++i) {
@@ -201,13 +186,10 @@ public:
     // Move assignment operator
     Vector& operator=(Vector&& other) noexcept {
         if (this != &other) {
-            // Clean up existing buffer
             delete[] m_buffer;
-            
             m_capacity = other.m_capacity;
             m_size = other.m_size;
             m_buffer = other.m_buffer;
-            
             other.m_capacity = 0;
             other.m_size = 0;
             other.m_buffer = nullptr;
@@ -319,17 +301,12 @@ public:
         if (start == end) {
             return;
         }
-        
         size_t start_idx = start.index;
         size_t end_idx = end.index;
         size_t count = end_idx - start_idx;
-        
-        // Move elements from end to start
         for (size_t i = end_idx; i < m_size; ++i) {
             m_buffer[start_idx + (i - end_idx)] = std::move(m_buffer[i]);
         }
-        
-        // Update size
         resize(m_size - count);
     }
 
@@ -389,21 +366,17 @@ public:
         if (new_capacity == m_capacity) {
             return;
         }
-        
         T* new_buffer = nullptr;
         if (new_capacity > 0) {
             new_buffer = new T[new_capacity];
         }
-        
         size_t copy_size = m_size < new_capacity ? m_size : new_capacity;
         for (size_t i = 0; i < copy_size; ++i) {
             new_buffer[i] = std::move(m_buffer[i]);
         }
-        
         delete[] m_buffer;
         m_buffer = new_buffer;
         m_capacity = new_capacity;
-        
         if (m_size > new_capacity) {
             m_size = new_capacity;
         }
@@ -425,5 +398,26 @@ public:
         return os;
     }
 };
+
+// Define the friend functions OUTSIDE both classes
+template <typename T>
+typename Vector<T>::Iterator operator+(size_t offset, const typename Vector<T>::Iterator& iter) {
+    if (iter.index + offset > iter.m_container->m_size) {
+        throw VectorException("out of bounds");
+    }
+    typename Vector<T>::Iterator temp = iter;
+    temp.index += offset;
+    return temp;
+}
+
+template <typename T>
+typename Vector<T>::Iterator operator+(const typename Vector<T>::Iterator& iter, size_t offset) {
+    if (iter.index + offset > iter.m_container->m_size) {
+        throw VectorException("out of bounds");
+    }
+    typename Vector<T>::Iterator temp = iter;
+    temp.index += offset;
+    return temp;
+}
 
 #endif
