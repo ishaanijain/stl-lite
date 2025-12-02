@@ -7,6 +7,14 @@
 template <typename T>
 class Vector {
 private:
+    // Forward declare Iterator
+    class Iterator;
+
+    // Private member fields
+    size_t m_capacity;
+    size_t m_size;
+    T* m_buffer;
+
     // Nested Iterator class
     class Iterator {
     private:
@@ -120,32 +128,25 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend functions for addition - MOVED OUTSIDE Iterator class
+        // Friend functions for addition declared here
+        friend Iterator operator+(size_t offset, const Iterator& iter) {
+            if (iter.index + offset > iter.m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = iter;
+            temp.index += offset;
+            return temp;
+        }
+
+        friend Iterator operator+(const Iterator& iter, size_t offset) {
+            if (iter.index + offset > iter.m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            Iterator temp = iter;
+            temp.index += offset;
+            return temp;
+        }
     };
-
-    // Friend declarations for operator+ (so they can access Vector's private members)
-    friend Iterator operator+(size_t offset, const Iterator& iter) {
-        if (iter.index + offset > iter.m_container->m_size) {
-            throw VectorException("out of bounds");
-        }
-        Iterator temp = iter;
-        temp.index += offset;
-        return temp;
-    }
-
-    friend Iterator operator+(const Iterator& iter, size_t offset) {
-        if (iter.index + offset > iter.m_container->m_size) {
-            throw VectorException("out of bounds");
-        }
-        Iterator temp = iter;
-        temp.index += offset;
-        return temp;
-    }
-
-    // Private member fields
-    size_t m_capacity;
-    size_t m_size;
-    T* m_buffer;
 
 public:
     // Default constructor
