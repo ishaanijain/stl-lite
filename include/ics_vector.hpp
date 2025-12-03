@@ -123,22 +123,9 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend functions defined inline
-        friend Iterator operator+(size_t offset, const Iterator& iter) {
-            Iterator result(iter.m_container, iter.index + offset);
-            if (result.index > result.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            return result;
-        }
-
-        friend Iterator operator+(const Iterator& iter, size_t offset) {
-            Iterator result(iter.m_container, iter.index + offset);
-            if (result.index > result.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            return result;
-        }
+        // Friend operator+ declarations (implemented outside the class)
+        friend Iterator operator+(size_t offset, const Iterator& iter);
+        friend Iterator operator+(const Iterator& iter, size_t offset);
     };
 
     // Private member fields
@@ -303,7 +290,7 @@ public:
             throw VectorException("popping from empty");
         }
         --m_size;
-        // Don't manually call destructor - it will be called when array is deleted
+        m_buffer[m_size].~T();
     }
 
     // erase(start, end)
@@ -398,7 +385,9 @@ public:
 
     // clear()
     void clear() noexcept {
-        // Don't manually call destructors - just reset size
+        for (size_t i = 0; i < m_size; ++i) {
+            m_buffer[i].~T();
+        }
         m_size = 0;
     }
 
@@ -408,6 +397,23 @@ public:
             os << vec.m_buffer[i] << " ";
         }
         return os;
+    }
+
+    // Friend operator+ implementations (defined outside Iterator class but inside Vector)
+    friend Iterator operator+(size_t offset, const Iterator& iter) {
+        Iterator result(iter.m_container, iter.index + offset);
+        if (result.index > result.m_container->m_size) {
+            throw VectorException("out of bounds");
+        }
+        return result;
+    }
+
+    friend Iterator operator+(const Iterator& iter, size_t offset) {
+        Iterator result(iter.m_container, iter.index + offset);
+        if (result.index > result.m_container->m_size) {
+            throw VectorException("out of bounds");
+        }
+        return result;
     }
 };
 
