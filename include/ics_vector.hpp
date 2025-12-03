@@ -123,7 +123,7 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend operator+ declarations - implemented outside Iterator class
+        // Friend operator+ implementations inline
         friend Iterator operator+(size_t offset, const Iterator& iter) {
             Iterator result(iter.m_container, iter.index + offset);
             if (result.index > result.m_container->m_size) {
@@ -182,7 +182,6 @@ public:
     // Copy assignment operator
     Vector& operator=(const Vector& other) {
         if (this != &other) {
-            // Destroy existing elements
             for (size_t i = 0; i < m_size; ++i) {
                 m_buffer[i].~T();
             }
@@ -214,7 +213,6 @@ public:
     // Move assignment operator
     Vector& operator=(Vector&& other) noexcept {
         if (this != &other) {
-            // Destroy existing elements
             for (size_t i = 0; i < m_size; ++i) {
                 m_buffer[i].~T();
             }
@@ -341,17 +339,14 @@ public:
         size_t end_idx = end.index;
         size_t count = end_idx - start_idx;
         
-        // Move elements after the erased range
         for (size_t i = end_idx; i < m_size; ++i) {
             m_buffer[start_idx + (i - end_idx)] = std::move(m_buffer[i]);
         }
         
-        // Destroy the elements at the end
         for (size_t i = m_size - count; i < m_size; ++i) {
             m_buffer[i].~T();
         }
         
-        // Update size
         m_size -= count;
     }
 
@@ -419,12 +414,10 @@ public:
         
         size_t copy_size = m_size < new_capacity ? m_size : new_capacity;
         
-        // Move construct elements into new buffer
         for (size_t i = 0; i < copy_size; ++i) {
             new (&new_buffer[i]) T(std::move(m_buffer[i]));
         }
         
-        // Destroy old elements
         for (size_t i = 0; i < m_size; ++i) {
             m_buffer[i].~T();
         }
@@ -446,14 +439,13 @@ public:
         m_size = 0;
     }
 
-    // operator<<
+    // operator
     friend std::ostream& operator<<(std::ostream& os, const Vector& vec) {
         for (size_t i = 0; i < vec.m_size; ++i) {
             os << vec.m_buffer[i] << " ";
         }
         return os;
     }
-
 };
 
-#endif 
+#endif
