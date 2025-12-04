@@ -4,7 +4,6 @@
 #include <iosfwd>
 #include <cstddef>
 #include <utility>
-#include <new>
 #include "vector_exception.hpp"
 
 template <typename T>
@@ -123,22 +122,9 @@ private:
             return &(m_container->m_buffer[index]);
         }
 
-        // Friend operator+ implementations inline
-        friend Iterator operator+(size_t offset, const Iterator& iter) {
-            Iterator result(iter.m_container, iter.index + offset);
-            if (result.index > result.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            return result;
-        }
-        
-        friend Iterator operator+(const Iterator& iter, size_t offset) {
-            Iterator result(iter.m_container, iter.index + offset);
-            if (result.index > result.m_container->m_size) {
-                throw VectorException("out of bounds");
-            }
-            return result;
-        }
+        // Friend declarations ONLY
+        friend Iterator operator+(size_t offset, const Iterator& iter);
+        friend Iterator operator+(const Iterator& iter, size_t offset);
     };
 
     // Private member fields
@@ -445,6 +431,23 @@ public:
             os << vec.m_buffer[i] << " ";
         }
         return os;
+    }
+
+    // Friend operator+ implementations
+    friend Iterator operator+(size_t offset, const Iterator& iter) {
+        Iterator result(iter.m_container, iter.index + offset);
+        if (result.index > result.m_container->m_size) {
+            throw VectorException("out of bounds");
+        }
+        return result;
+    }
+
+    friend Iterator operator+(const Iterator& iter, size_t offset) {
+        Iterator result(iter.m_container, iter.index + offset);
+        if (result.index > result.m_container->m_size) {
+            throw VectorException("out of bounds");
+        }
+        return result;
     }
 };
 
