@@ -107,6 +107,14 @@ private:
             }
             return &(m_container->m_buffer[index]);
         }
+
+        Iterator operator+(size_t offset) const {
+            Iterator result(m_container, index + offset);
+            if (result.index > m_container->m_size) {
+                throw VectorException("out of bounds");
+            }
+            return result;
+        }
     };
 
     size_t m_capacity;
@@ -379,19 +387,7 @@ public:
     }
 
     friend Iterator operator+(size_t offset, const Iterator& iter) {
-        Iterator result(iter.m_container, iter.index + offset);
-        if (result.index > result.m_container->m_size) {
-            throw VectorException("out of bounds");
-        }
-        return result;
-    }
-
-    friend Iterator operator+(const Iterator& iter, size_t offset) {
-        Iterator result(iter.m_container, iter.index + offset);
-        if (result.index > result.m_container->m_size) {
-            throw VectorException("out of bounds");
-        }
-        return result;
+        return iter + offset;
     }
 };
 
